@@ -1,0 +1,12 @@
+
+target/
+# Old generated reports
+Metrics
+
+# bye bye idea
+.idea
+
+# bye bye eclipse
+.classpath
+.project
+
