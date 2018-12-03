@@ -4,10 +4,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class RollDieTest {
-    static class SinglePlayerGame extends Game {
+    static class SilentSinglePlayerGame extends Game {
         final int indexOfTheOnlyPlayer = 0;
 
-        SinglePlayerGame(int startingPlaceOfTheOnlyPlayer) {
+        SilentSinglePlayerGame(int startingPlaceOfTheOnlyPlayer) {
             super();
             add("::player name::");
             places[indexOfTheOnlyPlayer] = startingPlaceOfTheOnlyPlayer;
@@ -31,10 +31,20 @@ public class RollDieTest {
 
     @Test
     public void happyPath() {
-        SinglePlayerGame singlePlayerGame = new SinglePlayerGame(0);
+        SilentSinglePlayerGame silentSinglePlayerGame = new SilentSinglePlayerGame(0);
 
-        singlePlayerGame.roll(3);
+        silentSinglePlayerGame.roll(3);
 
-        Assert.assertEquals(3, singlePlayerGame.getPlaceOfTheOnlyPlayer());
+        Assert.assertEquals(3, silentSinglePlayerGame.getPlaceOfTheOnlyPlayer());
+    }
+
+    @Test
+    public void goOffTheEndOfTheBoard() {
+        SilentSinglePlayerGame silentSinglePlayerGame = new SilentSinglePlayerGame(11);
+
+        silentSinglePlayerGame.roll(30);
+
+        // CONTRACT For now, the board is a weird shape: circular, but not quite.
+        Assert.assertEquals(29, silentSinglePlayerGame.getPlaceOfTheOnlyPlayer());
     }
 }

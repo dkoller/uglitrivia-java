@@ -51,6 +51,7 @@ public class Game {
 		return players.size();
 	}
 
+	// CONTRACT The parameter roll is expected to be in [1, 6]
 	public void roll(int roll) {
 		reportMessage(players.get(currentPlayer) + " is the current player");
 		reportMessage("They have rolled a " + roll);
