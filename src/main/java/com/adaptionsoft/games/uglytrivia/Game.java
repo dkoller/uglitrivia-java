@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Game {
-    ArrayList players = new ArrayList();
+	private final ReportEngine reportEngine;
+	ArrayList players = new ArrayList();
     int[] places = new int[6];
     int[] purses  = new int[6];
     boolean[] inPenaltyBox  = new boolean[6];
@@ -16,15 +17,20 @@ public class Game {
     
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
-    
-    public  Game(){
+
+	public  Game() {
+		this(new ConsoleReportEngine());
+	}
+
+	Game(ReportEngine reportEngine){
     	for (int i = 0; i < 50; i++) {
 			popQuestions.addLast("Pop Question " + i);
 			scienceQuestions.addLast(("Science Question " + i));
 			sportsQuestions.addLast(("Sports Question " + i));
 			rockQuestions.addLast(createRockQuestion(i));
     	}
-    }
+		this.reportEngine = reportEngine;
+	}
 
 	public String createRockQuestion(int index){
 		return "Rock Question " + index;
@@ -41,9 +47,9 @@ public class Game {
 	    places[howManyPlayers()] = 0;
 	    purses[howManyPlayers()] = 0;
 	    inPenaltyBox[howManyPlayers()] = false;
-	    
-	    reportMessage(playerName + " was added");
-	    reportMessage("They are player number " + players.size());
+
+		reportEngine.reportMessage(playerName + " was added");
+		reportEngine.reportMessage("They are player number " + players.size());
 		return true;
 	}
 	
@@ -53,24 +59,24 @@ public class Game {
 
 	// CONTRACT The parameter roll is expected to be in [1, 6]
 	public void roll(int roll) {
-		reportMessage(players.get(currentPlayer) + " is the current player");
-		reportMessage("They have rolled a " + roll);
+		reportEngine.reportMessage(players.get(currentPlayer) + " is the current player");
+		reportEngine.reportMessage("They have rolled a " + roll);
 		
 		if (inPenaltyBox[currentPlayer]) {
 			if (roll % 2 != 0) {
 				isGettingOutOfPenaltyBox = true;
-				
-				reportMessage(players.get(currentPlayer) + " is getting out of the penalty box");
+
+				reportEngine.reportMessage(players.get(currentPlayer) + " is getting out of the penalty box");
 				places[currentPlayer] = places[currentPlayer] + roll;
 				if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-				
-				reportMessage(players.get(currentPlayer) 
-						+ "'s new location is " 
+
+				reportEngine.reportMessage(players.get(currentPlayer)
+						+ "'s new location is "
 						+ places[currentPlayer]);
-				reportMessage("The category is " + currentCategory());
+				reportEngine.reportMessage("The category is " + currentCategory());
 				askQuestion();
 			} else {
-				reportMessage(players.get(currentPlayer) + " is not getting out of the penalty box");
+				reportEngine.reportMessage(players.get(currentPlayer) + " is not getting out of the penalty box");
 				isGettingOutOfPenaltyBox = false;
 				}
 			
@@ -78,29 +84,29 @@ public class Game {
 		
 			places[currentPlayer] = places[currentPlayer] + roll;
 			if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-			
-			reportMessage(players.get(currentPlayer)
-					+ "'s new location is " 
+
+			reportEngine.reportMessage(players.get(currentPlayer)
+					+ "'s new location is "
 					+ places[currentPlayer]);
-			reportMessage("The category is " + currentCategory());
+			reportEngine.reportMessage("The category is " + currentCategory());
 			askQuestion();
 		}
 		
 	}
 
 	public void reportMessage(Object message) {
-		System.out.println(message);
+		reportEngine.reportMessage(message);
 	}
 
 	protected void askQuestion() {
 		if (currentCategory() == "Pop")
-			reportMessage(popQuestions.removeFirst());
+			reportEngine.reportMessage(popQuestions.removeFirst());
 		if (currentCategory() == "Science")
-			reportMessage(scienceQuestions.removeFirst());
+			reportEngine.reportMessage(scienceQuestions.removeFirst());
 		if (currentCategory() == "Sports")
-			reportMessage(sportsQuestions.removeFirst());
+			reportEngine.reportMessage(sportsQuestions.removeFirst());
 		if (currentCategory() == "Rock")
-			reportMessage(rockQuestions.removeFirst());		
+			reportEngine.reportMessage(rockQuestions.removeFirst());
 	}
 	
 	
@@ -120,9 +126,9 @@ public class Game {
 	public boolean wasCorrectlyAnswered() {
 		if (inPenaltyBox[currentPlayer]){
 			if (isGettingOutOfPenaltyBox) {
-				reportMessage("Answer was correct!!!!");
+				reportEngine.reportMessage("Answer was correct!!!!");
 				purses[currentPlayer]++;
-				reportMessage(players.get(currentPlayer) 
+				reportEngine.reportMessage(players.get(currentPlayer)
 						+ " now has "
 						+ purses[currentPlayer]
 						+ " Gold Coins.");
@@ -141,10 +147,10 @@ public class Game {
 			
 			
 		} else {
-		
-			reportMessage("Answer was corrent!!!!");
+
+			reportEngine.reportMessage("Answer was corrent!!!!");
 			purses[currentPlayer]++;
-			reportMessage(players.get(currentPlayer) 
+			reportEngine.reportMessage(players.get(currentPlayer)
 					+ " now has "
 					+ purses[currentPlayer]
 					+ " Gold Coins.");
@@ -158,8 +164,8 @@ public class Game {
 	}
 	
 	public boolean wrongAnswer(){
-		reportMessage("Question was incorrectly answered");
-		reportMessage(players.get(currentPlayer)+ " was sent to the penalty box");
+		reportEngine.reportMessage("Question was incorrectly answered");
+		reportEngine.reportMessage(players.get(currentPlayer) + " was sent to the penalty box");
 		inPenaltyBox[currentPlayer] = true;
 		
 		currentPlayer++;

@@ -8,7 +8,7 @@ public class RollDieTest {
         final int indexOfTheOnlyPlayer = 0;
 
         SilentSinglePlayerGame(int startingPlaceOfTheOnlyPlayer) {
-            super();
+            super(message -> {});
             add("::player name::");
             places[indexOfTheOnlyPlayer] = startingPlaceOfTheOnlyPlayer;
             inPenaltyBox[indexOfTheOnlyPlayer] = false;
