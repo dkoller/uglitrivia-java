@@ -70,7 +70,7 @@ public class Game {
                 reportEngine.reportMessage(players.get(currentPlayer)
                         + "'s new location is "
                         + places[currentPlayer]);
-                reportEngine.reportMessage("The category is " + currentCategory());
+                reportEngine.reportMessage("The category is " + category(places[currentPlayer]));
                 askQuestion();
             } else {
                 reportEngine.reportMessage(players.get(currentPlayer) + " is not getting out of the penalty box");
@@ -111,15 +111,19 @@ public class Game {
 
 
     private String currentCategory() {
-        if (places[currentPlayer] == 0) return "Pop";
-        if (places[currentPlayer] == 4) return "Pop";
-        if (places[currentPlayer] == 8) return "Pop";
-        if (places[currentPlayer] == 1) return "Science";
-        if (places[currentPlayer] == 5) return "Science";
-        if (places[currentPlayer] == 9) return "Science";
-        if (places[currentPlayer] == 2) return "Sports";
-        if (places[currentPlayer] == 6) return "Sports";
-        if (places[currentPlayer] == 10) return "Sports";
+        return category(places[currentPlayer]);
+    }
+
+    private String category(int place) {
+        if (place == 0) return "Pop";
+        if (place == 4) return "Pop";
+        if (place == 8) return "Pop";
+        if (place == 1) return "Science";
+        if (place == 5) return "Science";
+        if (place == 9) return "Science";
+        if (place == 2) return "Sports";
+        if (place == 6) return "Sports";
+        if (place == 10) return "Sports";
         return "Rock";
     }
 
