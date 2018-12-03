@@ -2,23 +2,18 @@ package com.adaptionsoft.games.trivia;
 
 import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Files.readAllBytes;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 
-public class GoldenMasterWriter {
-
-    public static void main(String[] args) throws IOException {
-        System.setOut(new PrintStream(new FileOutputStream(prepareMasterFile()), true));
-        GoldenMasterRunner.main(new String[0]);
-    }
+public class CheckGoldenMaster {
 
     @Test
     public void shouldProduceExpectedGoldenMasterOutput() throws IOException {
@@ -27,10 +22,10 @@ public class GoldenMasterWriter {
         GoldenMasterRunner.main(new String[0]);
         String actualContent = out.toString(UTF_8.name());
 
-        assertThat(actualContent, is(contentOf(goldenMasterFilePath(goldenMasterDirectory()), UTF_8)));
+        assertEquals(contentOf(goldenMasterFilePath(goldenMasterDirectory()), UTF_8), actualContent);
     }
 
-    private static Path goldenMasterDirectory() {
+    static Path goldenMasterDirectory() {
         return Paths.get("src", "test", "resources");
     }
 
@@ -38,12 +33,7 @@ public class GoldenMasterWriter {
         return new String(readAllBytes(goldenMasterFilePath), charset);
     }
 
-    private static File prepareMasterFile() throws IOException {
-        createDirectories(goldenMasterDirectory());
-        return goldenMasterFilePath(goldenMasterDirectory()).toFile();
-    }
-
-    private static Path goldenMasterFilePath(Path goldenMasterDirectory) {
+    static Path goldenMasterFilePath(Path goldenMasterDirectory) {
         return goldenMasterDirectory.resolve("golden-master.txt");
     }
 
