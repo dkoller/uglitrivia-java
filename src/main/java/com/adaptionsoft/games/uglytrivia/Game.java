@@ -65,8 +65,7 @@ public class Game {
                 isGettingOutOfPenaltyBox = true;
 
                 reportEngine.reportMessage(players.get(currentPlayer) + " is getting out of the penalty box");
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+                places[currentPlayer] = calculateNextPlace(places[currentPlayer], roll);
 
                 reportEngine.reportMessage(players.get(currentPlayer)
                         + "'s new location is "
@@ -78,14 +77,24 @@ public class Game {
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
-            places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+            places[currentPlayer] = calculateNextPlace(places[currentPlayer], roll);
 
             reportEngine.reportMessage(players.get(currentPlayer)
                     + "'s new location is "
                     + places[currentPlayer]);
             reportEngine.reportMessage("The category is " + currentCategory());
             askQuestion();
+        }
+    }
+
+    // this method should not overflow when you role more than 24
+    // should be (place+roll)%12
+    private static int calculateNextPlace(int place, int roll) {
+        int nextPlace = place + roll;
+        if (nextPlace <= 11) {
+            return nextPlace;
+        } else {
+            return nextPlace - 12;
         }
     }
 
