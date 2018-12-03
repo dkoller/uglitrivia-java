@@ -65,12 +65,11 @@ public class Game {
                 isGettingOutOfPenaltyBox = true;
 
                 reportEngine.reportMessage(players.get(currentPlayer) + " is getting out of the penalty box");
-                places[currentPlayer] = calculateNextPlace(places[currentPlayer], roll);
+                int nextPlace = calculateNextPlace(places[currentPlayer], roll);
 
-                reportEngine.reportMessage(players.get(currentPlayer)
-                        + "'s new location is "
-                        + places[currentPlayer]);
-                reportEngine.reportMessage("The category is " + category(places[currentPlayer]));
+                reportEngine.reportMessage(players.get(currentPlayer) + "'s new location is " + nextPlace);
+                reportEngine.reportMessage("The category is " + category(nextPlace));
+                places[currentPlayer] = nextPlace;
                 askQuestion();
             } else {
                 reportEngine.reportMessage(players.get(currentPlayer) + " is not getting out of the penalty box");
