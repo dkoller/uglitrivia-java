@@ -19,7 +19,7 @@ public class RollDieTest {
         }
 
         @Override
-        public void reportMessage(String message) {
+        public void reportMessage(Object message) {
             // Shut up
         }
 
