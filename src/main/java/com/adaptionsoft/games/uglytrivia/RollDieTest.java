@@ -11,10 +11,21 @@ public class RollDieTest {
             super();
             add("::player name::");
             places[indexOfTheOnlyPlayer] = startingPlaceOfTheOnlyPlayer;
+            inPenaltyBox[indexOfTheOnlyPlayer] = false;
         }
 
         public int getPlaceOfTheOnlyPlayer() {
             return places[this.indexOfTheOnlyPlayer];
+        }
+
+        @Override
+        public void reportMessage(String message) {
+            // Shut up
+        }
+
+        @Override
+        protected void askQuestion() {
+            // Shut up
         }
     }
 
