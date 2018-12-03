@@ -19,11 +19,6 @@ public class RollDieTest {
         }
 
         @Override
-        public void reportMessage(Object message) {
-            // Shut up
-        }
-
-        @Override
         protected void askQuestion() {
             // Shut up
         }

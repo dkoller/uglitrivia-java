@@ -94,10 +94,6 @@ public class Game {
 		
 	}
 
-	public void reportMessage(Object message) {
-		reportEngine.reportMessage(message);
-	}
-
 	protected void askQuestion() {
 		if (currentCategory() == "Pop")
 			reportEngine.reportMessage(popQuestions.removeFirst());
