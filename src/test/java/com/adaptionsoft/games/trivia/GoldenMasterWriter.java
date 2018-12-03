@@ -1,7 +1,5 @@
 package com.adaptionsoft.games.trivia;
 
-import org.junit.Test;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,8 +10,7 @@ import java.nio.file.Paths;
 
 public class GoldenMasterWriter {
 
-    @Test
-    public void runOnce() throws Exception {
+    public static void main(String[] args) throws IOException {
         System.setOut(new PrintStream(new FileOutputStream(prepareMasterFile())));
         GoldenMasterRunner.main(new String[0]);
     }
