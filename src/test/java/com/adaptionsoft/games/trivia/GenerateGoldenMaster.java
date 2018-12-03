@@ -11,7 +11,7 @@ public class GenerateGoldenMaster {
 
     public static void main(String[] args) throws IOException {
         System.setOut(new PrintStream(new FileOutputStream(prepareMasterFile()), true));
-        GoldenMasterRunner.main(new String[0]);
+        GoldenMasterRunner.sampleGames(10000);
     }
 
     static File prepareMasterFile() throws IOException {

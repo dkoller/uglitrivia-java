@@ -19,7 +19,7 @@ public class CheckGoldenMaster {
     public void shouldProduceExpectedGoldenMasterOutput() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream(1);
         System.setOut(new PrintStream(out, true));
-        GoldenMasterRunner.main(new String[0]);
+        GoldenMasterRunner.sampleGames(10000);
         String actualContent = out.toString(UTF_8.name());
 
         assertEquals(contentOf(goldenMasterFilePath(goldenMasterDirectory()), UTF_8), actualContent);
