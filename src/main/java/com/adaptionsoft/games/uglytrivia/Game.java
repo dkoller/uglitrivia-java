@@ -58,7 +58,7 @@ public class Game {
 
     static class PlayerState {
         private final String name;
-        private final int place;
+        private int place;
         private final int purse;
         private final boolean inPenaltyBox;
 
@@ -88,6 +88,7 @@ public class Game {
 
                 reportEngine.reportMessage(currentPlayerName() + "'s new location is " + nextPlace);
                 reportEngine.reportMessage("The category is " + category(nextPlace));
+                playerStates.get(currentPlayer).place = nextPlace;
                 places[currentPlayer] = nextPlace;
                 askQuestion();
             } else {
@@ -95,7 +96,9 @@ public class Game {
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
-            places[currentPlayer] = calculateNextPlace(places[currentPlayer], roll);
+            int nextPlace = calculateNextPlace(places[currentPlayer], roll);
+            playerStates.get(currentPlayer).place = nextPlace;
+            places[currentPlayer] = nextPlace;
 
             reportEngine.reportMessage(currentPlayerName()
                     + "'s new location is "
