@@ -72,6 +72,17 @@ public class Game {
         public void advance(int roll) {
             place = calculateNextPlace(place, roll);
         }
+
+        // this method should not overflow when you role more than 24
+        // should be (place+roll)%12
+        private static int calculateNextPlace(int place, int roll) {
+            int nextPlace = place + roll;
+            if (nextPlace <= 11) {
+                return nextPlace;
+            } else {
+                return nextPlace - 12;
+            }
+        }
     }
 
     public int howManyPlayers() {
@@ -101,8 +112,7 @@ public class Game {
             }
         } else {
             currentPlayerState().advance(roll);
-            int nextPlace = calculateNextPlace(places[currentPlayer], roll);
-            places[currentPlayer] = nextPlace;
+            places[currentPlayer] = currentPlayerState().place;
 
             reportEngine.reportMessage(currentPlayerName()
                     + "'s new location is "
@@ -120,16 +130,6 @@ public class Game {
         return currentPlayerState().name;
     }
 
-    // this method should not overflow when you role more than 24
-    // should be (place+roll)%12
-    private static int calculateNextPlace(int place, int roll) {
-        int nextPlace = place + roll;
-        if (nextPlace <= 11) {
-            return nextPlace;
-        } else {
-            return nextPlace - 12;
-        }
-    }
 
     protected void askQuestion() {
         if (currentCategory() == "Pop")
