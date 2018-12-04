@@ -7,9 +7,11 @@ import static java.util.stream.IntStream.rangeClosed;
 public class AddPlayersTest {
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
-    public void maximumAllowed() {
+    public void maximumAllowedPlayers() {
         Game game = new Game(message -> {
         });
+        //the production code "looks" like it would like to accept up to six players.
+        //but it seems not possible
         rangeClosed(1, 6).forEach(i -> game.add("player" + i));
     }
 }
