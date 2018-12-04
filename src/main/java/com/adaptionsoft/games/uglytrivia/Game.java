@@ -68,6 +68,10 @@ public class Game {
             this.purse = 0;
             this.inPenaltyBox = false;
         }
+
+        public void advance(int roll) {
+            place = calculateNextPlace(place, roll);
+        }
     }
 
     public int howManyPlayers() {
@@ -84,32 +88,36 @@ public class Game {
                 isGettingOutOfPenaltyBox = true;
 
                 reportEngine.reportMessage(currentPlayerName() + " is getting out of the penalty box");
-                int nextPlace = calculateNextPlace(places[currentPlayer], roll);
+                currentPlayerState().advance(roll);
 
-                reportEngine.reportMessage(currentPlayerName() + "'s new location is " + nextPlace);
-                reportEngine.reportMessage("The category is " + category(nextPlace));
-                playerStates.get(currentPlayer).place = nextPlace;
-                places[currentPlayer] = nextPlace;
+                reportEngine.reportMessage(currentPlayerName() + "'s new location is " + currentPlayerState().place);
+                reportEngine.reportMessage("The category is " + category(currentPlayerState().place));
+
+                places[currentPlayer] = currentPlayerState().place;
                 askQuestion();
             } else {
                 reportEngine.reportMessage(currentPlayerName() + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
+            currentPlayerState().advance(roll);
             int nextPlace = calculateNextPlace(places[currentPlayer], roll);
-            playerStates.get(currentPlayer).place = nextPlace;
             places[currentPlayer] = nextPlace;
 
             reportEngine.reportMessage(currentPlayerName()
                     + "'s new location is "
-                    + places[currentPlayer]);
+                    + currentPlayerState().place);
             reportEngine.reportMessage("The category is " + currentCategory());
             askQuestion();
         }
     }
 
+    private PlayerState currentPlayerState() {
+        return playerStates.get(currentPlayer);
+    }
+
     private String currentPlayerName() {
-        return playerStates.get(currentPlayer).name;
+        return currentPlayerState().name;
     }
 
     // this method should not overflow when you role more than 24
