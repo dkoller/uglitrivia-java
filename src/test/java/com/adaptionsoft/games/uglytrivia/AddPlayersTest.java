@@ -14,4 +14,12 @@ public class AddPlayersTest {
         //but it seems not possible
         rangeClosed(1, 6).forEach(i -> game.add("player" + i));
     }
+
+    @Test
+    public void five() throws Exception {
+        Game game = new Game(message -> {
+        });
+
+        rangeClosed(1, 5).forEach(i -> game.add("player" + i));
+    }
 }
