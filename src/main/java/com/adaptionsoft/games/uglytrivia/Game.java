@@ -1,7 +1,5 @@
 package com.adaptionsoft.games.uglytrivia;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -43,16 +41,31 @@ public class Game {
     }
 
     public boolean add(String playerName) {
-        players.add(playerName);
-        places[howManyPlayers()] = 0;
-        purses[howManyPlayers()] = 0;
-        inPenaltyBox[howManyPlayers()] = false;
+        PlayerState state = new PlayerState(playerName);
+        players.add(state.playerName);
+        places[howManyPlayers()] = state.place;
+        purses[howManyPlayers()] = state.purse;
+        inPenaltyBox[howManyPlayers()] = state.inPenaltyBox;
 
         reportEngine.reportMessage(playerName + " was added");
         reportEngine.reportMessage("They are player number " + players.size());
         return true;
     }
+    static class PlayerState{
+        private final String playerName;
+        private final int place;
+        private final int purse;
+        private final boolean inPenaltyBox;
 
+        PlayerState(String playerName){
+            this.playerName = playerName;
+            this.place = 0;
+            this.purse = 0;
+            this.inPenaltyBox = false;
+        }
+
+
+    }
     public int howManyPlayers() {
         return players.size();
     }
