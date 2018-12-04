@@ -144,7 +144,7 @@ public class Game {
 
 
     private String currentCategory() {
-        return category(places[currentPlayer]);
+        return category(currentPlayerState().place);
     }
 
     private static String category(int place) {
