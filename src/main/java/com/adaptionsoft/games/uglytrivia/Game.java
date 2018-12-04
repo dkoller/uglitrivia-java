@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -113,7 +115,7 @@ public class Game {
         return category(places[currentPlayer]);
     }
 
-    private String category(int place) {
+    private static String category(int place) {
         if (place == 0) return "Pop";
         if (place == 4) return "Pop";
         if (place == 8) return "Pop";
