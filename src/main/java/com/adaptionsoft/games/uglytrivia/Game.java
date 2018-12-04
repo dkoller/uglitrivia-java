@@ -2,6 +2,7 @@ package com.adaptionsoft.games.uglytrivia;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Game {
     private final ReportEngine reportEngine;
@@ -17,6 +18,7 @@ public class Game {
 
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
+    private final List<PlayerState> playerStates;
 
     public Game() {
         this(new ConsoleReportEngine());
@@ -29,6 +31,7 @@ public class Game {
             sportsQuestions.addLast(("Sports Question " + i));
             rockQuestions.addLast(createRockQuestion(i));
         }
+        playerStates = new ArrayList<>();
         this.reportEngine = reportEngine;
     }
 
@@ -41,64 +44,69 @@ public class Game {
     }
 
     public boolean add(String playerName) {
-        PlayerState state = new PlayerState(playerName);
-        players.add(state.playerName);
-        places[howManyPlayers()] = state.place;
-        purses[howManyPlayers()] = state.purse;
-        inPenaltyBox[howManyPlayers()] = state.inPenaltyBox;
+        PlayerState playerState = new PlayerState(playerName);
+        players.add(playerState.name);
+        places[howManyPlayers()] = playerState.place;
+        purses[howManyPlayers()] = playerState.purse;
+        inPenaltyBox[howManyPlayers()] = playerState.inPenaltyBox;
+        playerStates.add(playerState);
 
         reportEngine.reportMessage(playerName + " was added");
         reportEngine.reportMessage("They are player number " + players.size());
         return true;
     }
-    static class PlayerState{
-        private final String playerName;
+
+    static class PlayerState {
+        private final String name;
         private final int place;
         private final int purse;
         private final boolean inPenaltyBox;
 
-        PlayerState(String playerName){
-            this.playerName = playerName;
+        PlayerState(String name) {
+            this.name = name;
             this.place = 0;
             this.purse = 0;
             this.inPenaltyBox = false;
         }
-
-
     }
+
     public int howManyPlayers() {
         return players.size();
     }
 
     // CONTRACT The parameter roll is expected to be in [1, 6]
     public void roll(int roll) {
-        reportEngine.reportMessage(players.get(currentPlayer) + " is the current player");
+        reportEngine.reportMessage(currentPlayerName() + " is the current player");
         reportEngine.reportMessage("They have rolled a " + roll);
 
         if (inPenaltyBox[currentPlayer]) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
-                reportEngine.reportMessage(players.get(currentPlayer) + " is getting out of the penalty box");
+                reportEngine.reportMessage(currentPlayerName() + " is getting out of the penalty box");
                 int nextPlace = calculateNextPlace(places[currentPlayer], roll);
 
-                reportEngine.reportMessage(players.get(currentPlayer) + "'s new location is " + nextPlace);
+                reportEngine.reportMessage(currentPlayerName() + "'s new location is " + nextPlace);
                 reportEngine.reportMessage("The category is " + category(nextPlace));
                 places[currentPlayer] = nextPlace;
                 askQuestion();
             } else {
-                reportEngine.reportMessage(players.get(currentPlayer) + " is not getting out of the penalty box");
+                reportEngine.reportMessage(currentPlayerName() + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
             places[currentPlayer] = calculateNextPlace(places[currentPlayer], roll);
 
-            reportEngine.reportMessage(players.get(currentPlayer)
+            reportEngine.reportMessage(currentPlayerName()
                     + "'s new location is "
                     + places[currentPlayer]);
             reportEngine.reportMessage("The category is " + currentCategory());
             askQuestion();
         }
+    }
+
+    private String currentPlayerName() {
+        return playerStates.get(currentPlayer).name;
     }
 
     // this method should not overflow when you role more than 24
@@ -146,7 +154,7 @@ public class Game {
             if (isGettingOutOfPenaltyBox) {
                 reportEngine.reportMessage("Answer was correct!!!!");
                 purses[currentPlayer]++;
-                reportEngine.reportMessage(players.get(currentPlayer)
+                reportEngine.reportMessage(currentPlayerName()
                         + " now has "
                         + purses[currentPlayer]
                         + " Gold Coins.");
@@ -164,7 +172,7 @@ public class Game {
         } else {
             reportEngine.reportMessage("Answer was corrent!!!!");
             purses[currentPlayer]++;
-            reportEngine.reportMessage(players.get(currentPlayer)
+            reportEngine.reportMessage(currentPlayerName()
                     + " now has "
                     + purses[currentPlayer]
                     + " Gold Coins.");
@@ -179,14 +187,14 @@ public class Game {
 
     public boolean wrongAnswer() {
         reportEngine.reportMessage("Question was incorrectly answered");
-        reportEngine.reportMessage(players.get(currentPlayer) + " was sent to the penalty box");
+        reportEngine.reportMessage(currentPlayerName() + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
 
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
         return true;
     }
-    
+
     private boolean didPlayerWin() {
         return !(purses[currentPlayer] == 6);
     }
