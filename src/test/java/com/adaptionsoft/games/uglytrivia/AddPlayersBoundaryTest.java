@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static java.util.stream.IntStream.rangeClosed;
 
-public class AddPlayersTest {
+public class AddPlayersBoundaryTest {
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void maximumAllowedPlayers() {
