@@ -10,6 +10,7 @@ public class RollDieTest {
         SilentSinglePlayerGame(int startingPlaceOfTheOnlyPlayer) {
             super(message -> {});
             add("::player name::");
+            playerStates.get(indexOfTheOnlyPlayer).place = startingPlaceOfTheOnlyPlayer;
             places[indexOfTheOnlyPlayer] = startingPlaceOfTheOnlyPlayer;
             inPenaltyBox[indexOfTheOnlyPlayer] = false;
         }

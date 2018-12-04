@@ -18,7 +18,7 @@ public class Game {
 
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
-    private final List<PlayerState> playerStates;
+    final List<PlayerState> playerStates;
 
     public Game() {
         this(new ConsoleReportEngine());
@@ -58,7 +58,7 @@ public class Game {
 
     static class PlayerState {
         private final String name;
-        private int place;
+        int place;
         private final int purse;
         private final boolean inPenaltyBox;
 
