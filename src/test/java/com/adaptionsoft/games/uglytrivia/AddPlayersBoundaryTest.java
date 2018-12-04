@@ -22,4 +22,25 @@ public class AddPlayersBoundaryTest {
 
         rangeClosed(1, 5).forEach(i -> game.add("player" + i));
     }
+
+    @Test
+    public void nullPlayer() throws Exception {
+        Game game = new Game(message -> {
+        });
+        game.add(null);
+    }
+
+    @Test
+    public void emptyPlayer() throws Exception {
+        Game game = new Game(message -> {
+        });
+        game.add("");
+    }
+
+    @Test
+    public void blankPlayer() throws Exception {
+        Game game = new Game(message -> {
+        });
+        game.add("  ");
+    }
 }
